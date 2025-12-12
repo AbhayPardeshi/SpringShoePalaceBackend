@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/category")
 public class CategoryController {
 
-    private final CategoryRepository categoryRepository;
-
-    public CategoryController(CategoryRepository categoryRepository){
-        this.categoryRepository = categoryRepository;
-    }
+//    private final CategoryRepository categoryRepository;
+//
+//    public CategoryController(CategoryRepository categoryRepository){
+//        this.categoryRepository = categoryRepository;
+//    }
 
 
 }

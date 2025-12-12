@@ -18,13 +18,11 @@ import java.util.List;
 
 @Document(collection = "users")
 @Data
-
 public class User {
     @Id
     private String id;
 
-    private String firstName;
-    private String lastName;
+    private String userName;
 
     @Email
     @Indexed(unique = true)
@@ -34,9 +32,8 @@ public class User {
 
     private String passwordHash;
 
-    private Cart userCart = new Cart();
-
-    private Wishlist userWishlist = new Wishlist();
+    private String cartId;
+    private String wishlistId;
 
     private List<Address> userAddressList = new ArrayList<>();
 
@@ -46,5 +43,15 @@ public class User {
     @LastModifiedDate
     private Instant updatedAt;
 
+    private List<String> roles = List.of("USER");
+    private boolean isVerified = false;
+    private boolean isActive = true;
+    private int failedLoginAttempts = 0;
+
+    private Instant lockedUntil;
+    private Instant lastLoginAt;
+
+    @CreatedDate
+    private Instant lastPasswordChangeAt;
 
 }

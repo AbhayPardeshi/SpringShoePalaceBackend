@@ -1,5 +1,6 @@
 package com.example.shoepalace.controller;
 
+import com.example.shoepalace.dto.SignupRequest;
 import com.example.shoepalace.model.User;
 import com.example.shoepalace.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -27,5 +28,18 @@ public class UserController {
 
         User addedUser = userService.createUser(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedUser);
+    }
+
+    @PostMapping(path = "/signup")
+    public ResponseEntity<String> signupNewUser(@RequestBody SignupRequest request){
+        User savedUser = userService.signupUser(request);
+        String message;
+
+        if(savedUser != null){
+            message = "Successful new user signup, Please Login!";
+        }else{
+            message = "not successful";
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 }
