@@ -3,6 +3,7 @@ package com.example.shoepalace.controller;
 import com.example.shoepalace.dto.SignupRequest;
 import com.example.shoepalace.model.User;
 import com.example.shoepalace.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/signup")
-    public ResponseEntity<String> signupNewUser(@RequestBody SignupRequest request){
+    public ResponseEntity<String> signupNewUser(@Valid @RequestBody SignupRequest request){
         User savedUser = userService.signupUser(request);
         String message;
 

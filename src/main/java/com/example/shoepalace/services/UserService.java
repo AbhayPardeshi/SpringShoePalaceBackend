@@ -2,6 +2,7 @@ package com.example.shoepalace.services;
 
 import com.example.shoepalace.config.BCryptConfig;
 import com.example.shoepalace.dto.SignupRequest;
+import com.example.shoepalace.exception.EmailAlreadyUsedException;
 import com.example.shoepalace.model.User;
 import com.example.shoepalace.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,10 @@ public class UserService {
     }
 
     public User signupUser(SignupRequest request){
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new EmailAlreadyUsedException("Email already registered");
+        }
 
         // hashing the plain password using Bcrypt
         String plainPassword = request.getPassword();
