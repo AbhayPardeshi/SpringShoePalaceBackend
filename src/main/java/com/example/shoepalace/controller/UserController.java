@@ -1,7 +1,9 @@
 package com.example.shoepalace.controller;
 
-import com.example.shoepalace.dto.SignupRequest;
+import com.example.shoepalace.requestDTO.LoginRequest;
+import com.example.shoepalace.requestDTO.SignupRequest;
 import com.example.shoepalace.model.User;
+import com.example.shoepalace.responseDTO.JWTResponseDTO;
 import com.example.shoepalace.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -42,5 +44,12 @@ public class UserController {
             message = "not successful";
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
+    }
+
+    @PostMapping(path = "/login")
+        public ResponseEntity<JWTResponseDTO> userLogin(@Valid @RequestBody LoginRequest loginRequest){
+        JWTResponseDTO userTokens = userService.loginUser(loginRequest);
+
+        return ResponseEntity.ok().body(userTokens);
     }
 }

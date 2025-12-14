@@ -11,14 +11,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Document(collection = "users")
 @Data
-public class User {
+public class User implements UserDetails {
     @Id
     private String id;
 
@@ -53,5 +56,20 @@ public class User {
 
     @CreatedDate
     private Instant lastPasswordChangeAt;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword(){
+        return passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
 
 }

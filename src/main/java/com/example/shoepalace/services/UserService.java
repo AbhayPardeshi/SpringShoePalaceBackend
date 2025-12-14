@@ -1,14 +1,16 @@
 package com.example.shoepalace.services;
 
-import com.example.shoepalace.config.BCryptConfig;
-import com.example.shoepalace.dto.SignupRequest;
+import com.example.shoepalace.exception.EmailNotFoundException;
+import com.example.shoepalace.exception.IncorrectPasswordException;
+import com.example.shoepalace.requestDTO.LoginRequest;
+import com.example.shoepalace.requestDTO.SignupRequest;
 import com.example.shoepalace.exception.EmailAlreadyUsedException;
 import com.example.shoepalace.model.User;
 import com.example.shoepalace.repository.UserRepository;
+import com.example.shoepalace.responseDTO.JWTResponseDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,5 +56,23 @@ public class UserService {
 
         return userRepository.save(newUser);
 
+    }
+
+    public JWTResponseDTO loginUser(LoginRequest request){
+        String userEmail = request.getEmail();
+JWTResponseDTO responseDTO = new JWTResponseDTO();
+
+            String plainPassword = request.getPassword();
+
+            User storedUser = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new EmailNotFoundException("Email not found"));
+
+            if (!passwordEncoder.matches(plainPassword, storedUser.getPasswordHash())) {
+                throw new IncorrectPasswordException("Invalid password");
+            }
+
+            responseDTO.setAccessToken("access token");
+            responseDTO.setRefreshToken("ref token");
+            return responseDTO;
     }
 }

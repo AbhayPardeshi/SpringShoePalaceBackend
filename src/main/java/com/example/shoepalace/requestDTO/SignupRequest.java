@@ -1,6 +1,5 @@
-package com.example.shoepalace.dto;
+package com.example.shoepalace.requestDTO;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
