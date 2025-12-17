@@ -18,10 +18,12 @@ import java.util.List;
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public UserService(PasswordEncoder passwordEncoder,UserRepository userRepository) {
+    public UserService(PasswordEncoder passwordEncoder,UserRepository userRepository,JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
 
@@ -60,7 +62,7 @@ public class UserService {
 
     public JWTResponseDTO loginUser(LoginRequest request){
         String userEmail = request.getEmail();
-JWTResponseDTO responseDTO = new JWTResponseDTO();
+        JWTResponseDTO responseDTO = new JWTResponseDTO();
 
             String plainPassword = request.getPassword();
 
@@ -71,7 +73,8 @@ JWTResponseDTO responseDTO = new JWTResponseDTO();
                 throw new IncorrectPasswordException("Invalid password");
             }
 
-            responseDTO.setAccessToken("access token");
+            String jwtToken = jwtService.generateToken(storedUser);
+            responseDTO.setAccessToken(jwtToken);
             responseDTO.setRefreshToken("ref token");
             return responseDTO;
     }
