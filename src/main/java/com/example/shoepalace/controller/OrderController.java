@@ -1,4 +1,4 @@
 package com.example.shoepalace.controller;
 
-public class UserController {
+public class OrderController {
 }

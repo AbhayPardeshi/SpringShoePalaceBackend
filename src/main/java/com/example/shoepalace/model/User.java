@@ -1,8 +1,8 @@
 package com.example.shoepalace.model;
 
-import com.example.shoepalace.model_internal.user.Address;
-import com.example.shoepalace.model_internal.user.Cart;
-import com.example.shoepalace.model_internal.user.Wishlist;
+import com.example.shoepalace.embedded.user.Address;
+import com.example.shoepalace.embedded.user.Cart;
+import com.example.shoepalace.embedded.user.Wishlist;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,20 +24,16 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     private String id;
-
     private String userName;
 
     @Email
     @Indexed(unique = true)
     @NotNull(message = "email cannot be blank")
     private String email;
-
-
     private String passwordHash;
 
-    private String cartId;
-    private String wishlistId;
-
+    private Cart cart = new Cart();
+    private Wishlist wishlist = new Wishlist();
     private List<Address> userAddressList = new ArrayList<>();
 
     @CreatedDate
@@ -53,8 +49,6 @@ public class User implements UserDetails {
 
     private Instant lockedUntil;
     private Instant lastLoginAt;
-
-    @CreatedDate
     private Instant lastPasswordChangeAt;
 
     @Override

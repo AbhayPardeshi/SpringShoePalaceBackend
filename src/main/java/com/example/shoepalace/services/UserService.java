@@ -48,8 +48,6 @@ public class UserService {
         newUser.setUserName(request.getUserName());
         newUser.setEmail(request.getEmail().trim().toLowerCase());
         newUser.setPasswordHash(hashedPass);
-        newUser.setCartId(null);
-        newUser.setWishlistId(null);
         newUser.setUserAddressList(new ArrayList<>());
 
         newUser.setRoles(new ArrayList<>(List.of("USER")));

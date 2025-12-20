@@ -1,4 +1,4 @@
-package com.example.shoepalace.model_internal.user;
+package com.example.shoepalace.embedded.user;
 
 import java.util.ArrayList;
 import java.util.List;
