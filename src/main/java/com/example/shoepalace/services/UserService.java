@@ -8,6 +8,7 @@ import com.example.shoepalace.exception.EmailAlreadyUsedException;
 import com.example.shoepalace.model.User;
 import com.example.shoepalace.repository.UserRepository;
 import com.example.shoepalace.responseDTO.JWTResponseDTO;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService{
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtService jwtService;
@@ -25,6 +26,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
     }
+
+
 
 
     public User createUser(User newUserToBeAdded){

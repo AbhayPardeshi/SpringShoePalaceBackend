@@ -11,10 +11,14 @@ import com.example.shoepalace.model.User;
 import com.example.shoepalace.repository.ProductRepository;
 import com.example.shoepalace.repository.UserRepository;
 import com.example.shoepalace.requestDTO.AddToCartRequest;
+import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
+@Service
 public class CartService {
 
     UserRepository userRepository;
@@ -25,7 +29,32 @@ public class CartService {
         this.productRepository = productRepository;
     }
 
-    public void addToCart(AddToCartRequest addToCartRequest, String userEmail) throws Exception {
+    public Cart viewCart(String userEmail){
+        User savedUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EmailNotFoundException("no user found"));
+
+        return savedUser.getCart() != null
+                ? savedUser.getCart()
+                : new Cart();
+    }
+
+    public void clearCart(String userEmail){
+        User savedUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EmailNotFoundException("no user found"));
+
+        Cart userCart = savedUser.getCart();
+
+        if (userCart == null || userCart.getCartItemList() == null) {
+            return;
+        }
+
+        userCart.getCartItemList().clear();
+        userRepository.save(savedUser);
+
+    }
+
+
+    public void addToCart(AddToCartRequest addToCartRequest, String userEmail) {
 
         User savedUser = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EmailNotFoundException("no user found"));
@@ -69,7 +98,70 @@ public class CartService {
         userRepository.save(savedUser);
     }
 
-    private static CartItem getCartItem(AddToCartRequest addToCartRequest, Product product) throws Exception {
+    public void removeFromCart(String cartItemId, String userEmail){
+        User savedUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EmailNotFoundException("no user found"));
+
+        Cart userCart = savedUser.getCart();
+
+        List<CartItem> cartItems = userCart.getCartItemList();
+
+        Iterator<CartItem> iterator = cartItems.iterator();
+
+        boolean removed = false;
+
+        while (iterator.hasNext()) {
+            if (iterator.next().getCartItemId().equals(cartItemId)) {
+                iterator.remove();
+                removed = true;
+                break;
+            }
+        }
+
+        if (!removed) {
+            throw new InvalidCartOperationException("Cart item not found");
+        }
+
+
+        userRepository.save(savedUser);
+
+    }
+
+    public void updateQuantity(String cartItemId, String userEmail, int quantity){
+        User savedUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EmailNotFoundException("no user found"));
+
+        if (quantity <= 0) {
+            throw new InvalidCartOperationException("Quantity must be greater than 0");
+        }
+
+        Cart userCart = savedUser.getCart();
+
+        List<CartItem> cartItems = userCart.getCartItemList();
+
+        Iterator<CartItem> iterator = cartItems.iterator();
+
+        boolean updated = false;
+
+        while (iterator.hasNext()) {
+            CartItem item = iterator.next();
+            System.out.println(item.getCartItemId());
+            if (item.getCartItemId().equals(cartItemId)) {
+                item.setQuantity(quantity);
+                updated = true;
+                break;
+            }
+        }
+
+        if (!updated) {
+            throw new InvalidCartOperationException("Cart item not found");
+        }
+
+
+        userRepository.save(savedUser);
+    }
+
+    private static CartItem getCartItem(AddToCartRequest addToCartRequest, Product product) {
 
         // get the price for the product
         Pricing pricing = product.getProductPricing();
@@ -79,6 +171,7 @@ public class CartService {
 
         CartItem newItem = new CartItem();
 
+        newItem.setCartItemId(UUID.randomUUID().toString());
         newItem.setProductId(addToCartRequest.getProductId());
         newItem.setSelectedSize(addToCartRequest.getSelectedSize());
         newItem.setSelectedColor(addToCartRequest.getSelectedColor());
@@ -87,4 +180,6 @@ public class CartService {
 
         return newItem;
     }
+
+
 }
