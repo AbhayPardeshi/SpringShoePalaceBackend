@@ -27,7 +27,10 @@ public class UserService{
         this.jwtService = jwtService;
     }
 
-
+    public User getCurrentUser(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new EmailNotFoundException("User not found"));
+    }
 
 
     public User createUser(User newUserToBeAdded){

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api/cart")
 public class CartController {
 
-    private CartService cartService;
-    private CartMapper cartMapper;
+    private final CartService cartService;
+    private final CartMapper cartMapper;
 
     public CartController (CartService cartService, CartMapper cartMapper){
         this.cartService = cartService;

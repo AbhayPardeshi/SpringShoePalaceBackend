@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 public class CartService {
 
-    UserRepository userRepository;
+     UserRepository userRepository;
      ProductRepository productRepository;
 
     CartService(UserRepository userRepository, ProductRepository productRepository){
@@ -121,7 +121,6 @@ public class CartService {
         if (!removed) {
             throw new InvalidCartOperationException("Cart item not found");
         }
-
 
         userRepository.save(savedUser);
 
