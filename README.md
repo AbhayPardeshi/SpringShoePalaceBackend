@@ -224,18 +224,27 @@ MONGO_URI=your_mongo_connection
 # **📁 Project Structure**
 
 ```
-src/
- └── main/java/com/example/shoepalace
-      ├── controller/
-      ├── services/
-      ├── repository/
-      ├── model/
-      ├── mapper/
-      ├── requestDTO/
-      ├── responseDTO/
-      ├── exception/
-      └── config/
+shoepalace
+│
+├── com.example.shoepalace
+│   ├── config          → Security, JWT, Cross-cutting settings
+│   ├── controller      → HTTP REST API endpoints
+│   ├── embedded        → Embedded MongoDB documents (Cart, Wishlist, Address, etc.)
+│   ├── exception       → Global exception handling, custom errors
+│   ├── mapper          → DTO ↔ Entity converters
+│   ├── model           → Core domain objects (User, Product, Order)
+│   ├── repository      → MongoDB repositories
+│   ├── requestDTO      → Payloads for incoming API requests
+│   ├── responseDTO     → Clean, API-safe response objects
+│   └── services        → Business logic and workflow orchestration
+│
+└── resources
+    ├── static
+    ├── templates
+    ├── application.properties
+    └── application.properties.example
 ```
+
 
 ---
 
