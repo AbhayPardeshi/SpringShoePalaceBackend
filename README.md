@@ -259,8 +259,4 @@ shoepalace
 
 ---
 
-# **📜 License**
-MIT License
-
----
  
