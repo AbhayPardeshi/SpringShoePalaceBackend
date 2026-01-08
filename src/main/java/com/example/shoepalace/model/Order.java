@@ -37,12 +37,6 @@ public class Order {
     @CreatedDate
     private Instant createdAt;
 
-    public enum OrderStatus {
-        CREATED,
-        PAID,
-        SHIPPED,
-        DELIVERED,
-        CANCELLED
-    }
+
 
 }
