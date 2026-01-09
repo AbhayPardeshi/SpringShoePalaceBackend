@@ -2,6 +2,7 @@ package com.example.shoepalace.controller;
 
 import com.example.shoepalace.mapper.OrderMapper;
 import com.example.shoepalace.model.Order;
+import com.example.shoepalace.requestDTO.OrderCheckoutRequest;
 import com.example.shoepalace.responseDTO.OrderResponseDTO;
 import com.example.shoepalace.services.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,13 @@ public class OrderController {
         return ResponseEntity.ok(orderMapper.toOrderResponseList(orderList));
     }
 
+    @PostMapping("/{orderId}/cancel")
+    public ResponseEntity<?> cancelOrder(Authentication authentication,
+                                         @PathVariable String orderId){
+            orderService.deleteOrder(orderId,authentication.getName());
+        return ResponseEntity.ok("Order deleted successfully");
+    }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(@PathVariable String orderId,
                                       Authentication auth) {
@@ -42,5 +50,22 @@ public class OrderController {
         String orderId = orderService.createOrder(authentication.getName());
         return ResponseEntity.ok(orderId);
     }
+
+    @PutMapping("/{orderId}/checkout")
+    public ResponseEntity<?> updateCheckoutInfo(Authentication authentication,
+                                                OrderCheckoutRequest request,
+                                                @PathVariable String orderId){
+        orderService.updateCheckoutInfo(orderId, authentication.getName(), request);
+
+        return ResponseEntity.ok("Checkout details updated");
+    }
+
+    @PostMapping("/{orderId}/pay")
+    public ResponseEntity<?> payOrder(@PathVariable String orderId,
+                                      Authentication auth) {
+        orderService.payOrder(orderId, auth.getName());
+        return ResponseEntity.ok("Order marked as PAID");
+    }
+
 
 }
