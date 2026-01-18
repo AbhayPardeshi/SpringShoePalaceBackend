@@ -12,4 +12,8 @@ public interface ProductRepositoryCustom {
     Product createProduct(Product p);
 
     Optional<Product> findProductById(String id);
+
+    Product updateProduct(Product product);
+
+    boolean deleteProduct(String id);
 }
