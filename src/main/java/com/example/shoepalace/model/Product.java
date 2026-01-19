@@ -19,12 +19,15 @@ import java.util.List;
 public class Product {
     @Id
     private String id;  // MongoDB ObjectId auto-generated
+    private String slug;
 
     private String name;
     private String brand;
     private String description;
-    private String category;
     private List<String> imageUrl;
+    // can later switch to enum
+    private String gender;
+    private List<String> categories;
 
     private Pricing productPricing = new Pricing();
     private RatingSummary ratingSummary = new RatingSummary();
